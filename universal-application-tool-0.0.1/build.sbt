@@ -6,8 +6,9 @@ lazy val root = (project in file("."))
     scalaVersion := "2.13.1",
     libraryDependencies ++= Seq(
       guice,
+      javaJdbc,
       // Test Database
-      "com.h2database" % "h2" % "1.4.199",
+      "org.postgresql" % "postgresql" % "42.2.18",
       // Testing libraries for dealing with CompletionStage...
       "org.assertj" % "assertj-core" % "3.14.0" % Test,
       "org.awaitility" % "awaitility" % "4.0.1" % Test,
