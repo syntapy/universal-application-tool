@@ -7,3 +7,8 @@ RUNNING_PID
 .bsp/
 .ssh/
 credentials.json
+.terraform
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+universal-application-tool-0.0.1/.bsp/sbt.json

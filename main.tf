@@ -1,47 +1,39 @@
-provider "google" {
-    version = "3.5.0"
-    credentials = file("credentials.json")
-    project = "decoded-indexer-301503"
-    region = "us-central1"
-    zone = "us-central1-c"
+terraform {
+  required_providers {
+    docker = {
+      source = "kreuzwerker/docker"
+      version = "2.10.0"
+    }
+  }
 }
 
-resource "google_compute_instance" "vm_instance" {
-    name = "terraform-instance"
-    machine_type = "f1-micro"
-    tags = ["web", "dev"]
-
-    boot_disk {
-        initialize_params {
-            image = "debian-cloud/debian-10"
-        }
-    }
-    
-    network_interface {
-        network = google_compute_network.vpc_network.self_link
-        access_config {
-            nat_ip = google_compute_address.vm_static_ip.address
-        }
-    }
-
-
-    provisioner "file" {
-        source      = "compose-app/"
-        destination = "/code"
-    }
-
-    provisioner "remote-exec" {
-        inline = [
-            "cd /code",
-            "docker-compose up",
-        ]
-    } 
+# Configure Docker provider and connect to the local Docker socket
+provider "docker" {
+  host = "unix:///var/run/docker.sock"
 }
 
-resource "google_compute_network" "vpc_network" {
-    name = "terraform-network"
+# Containers
+resource "docker_container" "postgres" {
+  image = docker_image.postgres.latest
+  name  = "db"
+  restart = "always"
+  env = ["POSTGRES_PASSWORD=example"]
 }
 
-resource "google_compute_address" "vm_static_ip" {
-    name = "terraform-static-ip"
+resource "docker_container" "adminer" {
+  image = docker_image.adminer.latest
+  name = "adminer"
+  restart = "always"
+  ports {
+    internal = 8080
+    external = 8080
+  }
+}
+
+resource "docker_image" "postgres" {
+  name = "postgres:latest"
+}
+
+resource "docker_image" "adminer" {
+  name = "adminer:latest"
 }
