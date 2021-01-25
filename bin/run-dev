@@ -1,2 +1,23 @@
 #!/bin/bash
-docker-compose up
+docker run -d \
+    -e POSTGRES_PASSWORD='example' \
+    --restart=always \
+    --name=db \
+    postgres:latest
+
+docker run -d \
+    --restart=always \
+    -p 8080:8080 \
+    --name=adminer \
+    adminer:latest
+    
+#docker build \
+#    --tag=uat \
+#    .
+
+docker run -d \
+    --restart=always \
+    -p 9000:9000 \
+    --link db:database \
+    --name=play \
+    uat sbt ~run

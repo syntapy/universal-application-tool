@@ -6,9 +6,11 @@ RUNNING_PID
 *.swp
 .bsp/
 .ssh/
-credentials.json
 .terraform
 .terraform.lock.hcl
 *.tfstate
 *.tfstate.backup
 universal-application-tool-0.0.1/.bsp/sbt.json
+todo.txt
+credentials.json
+terraform-account.json
