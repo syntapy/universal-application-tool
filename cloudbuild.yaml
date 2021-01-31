@@ -1,12 +1,44 @@
 steps:
 
+# Postgres
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'pull'
+  - 'postgres'
+  id: 'postgres_build'
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'tag'
+  - 'postgres'
+  - 'gcr.io/$PROJECT_ID/postgres'
+  id: 'postgres_tag'
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'push'
+  - 'gcr.io/$PROJECT_ID/postgres'
+  id: 'postgres_push'
+
+# Play adminer
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--tag=gcr.io/$PROJECT_ID/adminer'
+  - '--file=Dockerfile_adminer'
+  - '.'
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'push'
+  - 'gcr.io/$PROJECT_ID/adminer'
+  id: 'adminer_push'
+
+# Play app
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'build'
   - '--tag=gcr.io/$PROJECT_ID/uat'
+  - '--file=Dockerfile_uat'
   - '.'
   id: 'uat_build'
-
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'push'
@@ -14,4 +46,6 @@ steps:
   id: 'uat_push'
 
 images:
+- 'gcr.io/$PROJECT_ID/postgres'
+- 'gcr.io/$PROJECT_ID/adminer'
 - 'gcr.io/$PROJECT_ID/uat'
