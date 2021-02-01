@@ -13,6 +13,6 @@ node_modules
 *.tfstate
 *.tfstate.backup
 universal-application-tool-0.0.1/.bsp/sbt.json
-todo.txt
+*.txt
 credentials.json
 terraform-account.json

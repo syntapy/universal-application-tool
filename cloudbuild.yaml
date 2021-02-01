@@ -23,7 +23,7 @@ steps:
   args:
   - 'build'
   - '--tag=gcr.io/$PROJECT_ID/adminer'
-  - '--file=Dockerfile_adminer'
+  - '--file=docker/Dockerfile_adminer'
   - '.'
 - name: 'gcr.io/cloud-builders/docker'
   args:
@@ -36,7 +36,7 @@ steps:
   args:
   - 'build'
   - '--tag=gcr.io/$PROJECT_ID/uat'
-  - '--file=Dockerfile_uat'
+  - '--file=docker/Dockerfile_uat'
   - '.'
   id: 'uat_build'
 - name: 'gcr.io/cloud-builders/docker'

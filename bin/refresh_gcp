@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PROJECT_ID=$(gcloud config get-value project)
+
+terraform refresh -var "project_id=$PROJECT_ID"

@@ -2,6 +2,6 @@
 
 PROJECT_ID=$(gcloud config get-value project)
 
-gcloud builds submit
+#gcloud builds submit
 terraform refresh -var "project_id=$PROJECT_ID" 
 terraform apply -var "project_id=$PROJECT_ID"
