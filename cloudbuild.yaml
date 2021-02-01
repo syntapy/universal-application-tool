@@ -1,0 +1,17 @@
+steps:
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '--tag=gcr.io/$PROJECT_ID/uat'
+  - '.'
+  id: 'uat_build'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'push'
+  - 'gcr.io/$PROJECT_ID/uat'
+  id: 'uat_push'
+
+images:
+- 'gcr.io/$PROJECT_ID/uat'

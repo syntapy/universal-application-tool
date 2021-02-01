@@ -16,7 +16,7 @@ RUN apk add --no-cache --update bash wget && mkdir -p "$SBT_HOME" && \
     echo -ne "- with sbt $SBT_VERSION\n" >> /root/.built
 
 # Install git
-RUN apk add --no-cache git openssh
+RUN apk add --no-cache git openssh netcat-openbsd coreutils
 
 # Install node.js
 RUN apk add nodejs
