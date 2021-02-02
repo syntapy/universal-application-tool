@@ -13,8 +13,8 @@ services:
     image: uat
     restart: always
     container_name: play
-    #links:
-    #  - "db:database"
+    links:
+      - "db:database"
     ports:
       - 9000:9000
     build: 

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Kind of cludgey because I didn't know how to effectively manage 
+# dependencies between ecr and the cluster, i.e. I believe 
+# I need images in the ecr before setting up the cluster
+terraform init
+terraform apply
+
+./cloudbuild.sh
+
+# uncomment lines 15 - 137 in main.tf before running terraform apply again
+

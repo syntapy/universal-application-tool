@@ -1,5 +1,0 @@
-#!/bin/bash
-
-PROJECT_ID=$(gcloud config get-value project)
-
-terraform destroy -var "project_id=$PROJECT_ID"
