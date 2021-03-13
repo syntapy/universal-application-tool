@@ -1,10 +1,30 @@
 #!/bin/bash
 
-# run bin/pull-image
-$( dirname ${BASH_SOURCE[0]})/pull-image
+if [ -z ${LOCALSTACK_API_KEY+"other string"} ]; 
+then 
+    echo "Please prepend with 'LOCALSTACK_API_KEY=...' to the command along with your localstack key";
+    echo "Thank you and have a good day :)";
+    echo "$LOCALSTACK_API_KEY"
+else 
+    set -e
+    set +x
+    export AWS_DEFAULT_REGION=us-west-2
+    export REGION=$AWS_DEFAULT_REGION
+    export AWS_S3_REGION=$AWS_DEFAULT_REGION
+    export AWS_S3_BUCKET_NAME=seattle-uat-cftmpl
 
-if [ -f ".secrets" ]; then
-	. .secrets
+    LOCALSTACK_API_KEY=$LOCALSTACK_API_KEY sudo docker-compose -f infra/localstack.yaml up -d
+
+    echo Waiting 45s for localstack stuff to finish
+    sleep 45
+
+    aws --endpoint-url=http://localhost:4566 --profile localstack cloudformation deploy --region ${REGION} --stack-name local_s3 --template-file ./infra/local_s3.yaml
+    # run bin/pull-image
+    $( dirname ${BASH_SOURCE[0]})/pull-image
+
+    if [ -f ".secrets" ]; then
+        . .secrets
+    fi
+
+    sudo AWS_S3_REGION=$AWS_S3_REGION AWS_S3_BUCKET_NAME=$AWS_S3_BUCKET_NAME docker-compose up
 fi
-
-docker-compose up

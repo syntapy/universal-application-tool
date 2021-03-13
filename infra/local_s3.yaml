@@ -1,0 +1,12 @@
+Description: UAT Bucket
+Resources:
+  Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: seattle-uat-cftmpl
+      AccessControl: PublicRead
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt [Bucket, WebsiteURL]
+    Description: URL for hosted website
+
