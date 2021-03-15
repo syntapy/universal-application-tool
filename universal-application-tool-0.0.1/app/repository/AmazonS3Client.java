@@ -18,11 +18,14 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
+import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Singleton
 public class AmazonS3Client {
   public static final String AWS_S3_REGION = "aws.s3.region";
   public static final String AWS_S3_BUCKET = "aws.s3.bucket";
+  public static final String DEV_ENV = "dev_env";
   private static final Logger log = LoggerFactory.getLogger("s3client");
 
   private final ApplicationLifecycle appLifecycle;
@@ -103,9 +106,26 @@ public class AmazonS3Client {
 
   private void connect() {
     String regionName = config.getString(AWS_S3_REGION);
+    String endpoint = ""
     region = Region.of(regionName);
     bucket = config.getString(AWS_S3_BUCKET);
+    dev_env = config.getString(DEV_ENV);
+    EndpointConfiguration endpoint_config;
+    AmazonS3ClientBuilder builder;
+    
+    if (dev_env.equals("1")) {
+        endpoint = "http://localhost:4566";
+        endpoint_config =  EndpoingConfiguration(endpoint, regionName);
 
-    s3 = S3Client.builder().region(region).build();
+        builder = AmazonS3ClientBuilder.defaultClient();
+        builder.setEndpointConfiguration(endpoing_config);
+        builder.setRegion(regionName);
+
+        s3 = builder.build();
+
+    } else {
+        s3 = S3Client.builder().region(region).build();
+    }
+
   }
 }
