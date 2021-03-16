@@ -2,6 +2,7 @@ package repository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.net.URI;
 import com.typesafe.config.Config;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
@@ -18,13 +19,12 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
-import static com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Singleton
 public class AmazonS3Client {
   public static final String AWS_S3_REGION = "aws.s3.region";
   public static final String AWS_S3_BUCKET = "aws.s3.bucket";
+  public static final String AWS_LOCAL_ENDPOINT = "aws.local.endpoint";
   public static final String DEV_ENV = "dev_env";
   private static final Logger log = LoggerFactory.getLogger("s3client");
 
@@ -106,22 +106,16 @@ public class AmazonS3Client {
 
   private void connect() {
     String regionName = config.getString(AWS_S3_REGION);
-    String endpoint = "";
+    String endpoint;
     region = Region.of(regionName);
     bucket = config.getString(AWS_S3_BUCKET);
     String dev_env = config.getString(DEV_ENV);
-    AmazonS3ClientBuilder builder;
-    EndpointConfiguration endpoint_config;
+    URI endpointOverride;
     
     if (dev_env.equals("1")) {
-        endpoint = "http://localhost:4566";
-        endpoint_config = EndpointConfiguration(endpoint, regionName);
-
-        builder = AmazonS3ClientBuilder.defaultClient();
-        builder.setEndpointConfiguration(endpoing_config);
-        builder.setRegion(regionName);
-
-        s3 = builder.build();
+        endpoint = config.getString(AWS_LOCAL_ENDPOINT);
+        endpointOverride = new URI(endpoint)
+        s3 = S3Client.builder().endpointOverride(endpointOverride).region(region).build();
 
     } else {
         s3 = S3Client.builder().region(region).build();
