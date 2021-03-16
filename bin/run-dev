@@ -25,6 +25,11 @@ else
     if [ -f ".secrets" ]; then
         . .secrets
     fi
-
-    sudo AWS_S3_REGION=$AWS_S3_REGION AWS_S3_BUCKET_NAME=$AWS_S3_BUCKET_NAME docker-compose up
+    docker tag public.ecr.aws/t1q6b4h2/uat-dev:latest uat
 fi
+
+if [ -f ".secrets" ]; then
+    . .secrets
+fi
+
+sudo AWS_S3_REGION=$AWS_S3_REGION AWS_S3_BUCKET_NAME=$AWS_S3_BUCKET_NAME docker-compose up
