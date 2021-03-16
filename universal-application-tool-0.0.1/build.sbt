@@ -21,9 +21,6 @@ lazy val root = (project in file("."))
       // Amazon AWS SDK
       "software.amazon.awssdk" % "aws-sdk-java" % "2.15.81",
 
-      // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-s3
-      "com.amazonaws" % "aws-java-sdk-s3" % "1.11.974", 
-
       // Database and database testing libraries
       "org.postgresql" % "postgresql" % "42.2.18",
       "org.testcontainers" % "postgresql" % "1.15.1" % Test,
