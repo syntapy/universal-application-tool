@@ -18,7 +18,7 @@ import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
-import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
+import static com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Singleton
@@ -106,16 +106,16 @@ public class AmazonS3Client {
 
   private void connect() {
     String regionName = config.getString(AWS_S3_REGION);
-    String endpoint = ""
+    String endpoint = "";
     region = Region.of(regionName);
     bucket = config.getString(AWS_S3_BUCKET);
-    dev_env = config.getString(DEV_ENV);
-    EndpointConfiguration endpoint_config;
+    String dev_env = config.getString(DEV_ENV);
     AmazonS3ClientBuilder builder;
+    EndpointConfiguration endpoint_config;
     
     if (dev_env.equals("1")) {
         endpoint = "http://localhost:4566";
-        endpoint_config =  EndpoingConfiguration(endpoint, regionName);
+        endpoint_config = EndpointConfiguration(endpoint, regionName);
 
         builder = AmazonS3ClientBuilder.defaultClient();
         builder.setEndpointConfiguration(endpoing_config);
