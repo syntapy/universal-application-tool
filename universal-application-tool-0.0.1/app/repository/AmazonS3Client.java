@@ -3,6 +3,8 @@ package repository;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.net.URI;
+import java.net.URISyntaxException;
+
 import com.typesafe.config.Config;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
@@ -33,6 +35,7 @@ public class AmazonS3Client {
   private Region region;
   private String bucket;
   private S3Client s3;
+  //private URI endpoingOverride;
 
   @Inject
   public AmazonS3Client(ApplicationLifecycle appLifecycle, Config config) {
@@ -111,15 +114,22 @@ public class AmazonS3Client {
     bucket = config.getString(AWS_S3_BUCKET);
     String dev_env = config.getString(DEV_ENV);
     URI endpointOverride;
-    
-    if (dev_env.equals("1")) {
-        endpoint = config.getString(AWS_LOCAL_ENDPOINT);
-        endpointOverride = new URI(endpoint)
-        s3 = S3Client.builder().endpointOverride(endpointOverride).region(region).build();
 
-    } else {
+    endpoint = config.getString(AWS_LOCAL_ENDPOINT);
+    try {
+        if (dev_env.equals("1")) {
+            endpointOverride = new URI(endpoint);
+            s3 = S3Client.builder().endpointOverride(endpointOverride).region(region).build();
+
+        } else {
+            s3 = S3Client.builder().region(region).build();
+        }
+
+    } catch(URISyntaxException e) {
+        log.info("failed to set enpoint uri. reverting from local s3 bucket");
+        dev_env = "0";
         s3 = S3Client.builder().region(region).build();
-    }
 
+    }
   }
 }
