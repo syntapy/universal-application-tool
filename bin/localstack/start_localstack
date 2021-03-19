@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sudo docker-compose -f infra/localstack.yaml up -d
+docker-compose -f infra/localstack.yaml up -d
 
 ./bin/localstack/wait_localstack_running
