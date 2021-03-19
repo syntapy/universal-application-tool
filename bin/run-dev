@@ -5,7 +5,7 @@ set +x
 export AWS_DEFAULT_REGION=us-west-2
 export REGION=$AWS_DEFAULT_REGION
 export AWS_S3_REGION=$AWS_DEFAULT_REGION
-export AWS_S3_BUCKET_NAME=seattle-uat-cftmpl
+export AWS_S3_BUCKET_NAME=civiform-local-s3
 
 ./bin/localstack/start_localstack
 

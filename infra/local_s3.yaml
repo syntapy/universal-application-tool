@@ -3,7 +3,7 @@ Resources:
   Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: seattle-uat-cftmpl
+      BucketName: civiform-local-s3
       AccessControl: PublicRead
 Outputs:
   WebsiteURL:

@@ -2,5 +2,5 @@
 
 ./bin/localstack/start_localstack
 
-aws --endpoint-url=http://localhost:4566 --profile localstack s3 rm s3://seattle-uat-cftmpl/*
-aws --endpoint-url=http://localhost:4566 --profile localstack s3 rm s3://seattle-uat-cftmpl
+aws --endpoint-url=http://localhost:4566 --profile localstack s3 rm s3://civiform-local-s3/*
+aws --endpoint-url=http://localhost:4566 --profile localstack s3 rm s3://civiform-local-s3
