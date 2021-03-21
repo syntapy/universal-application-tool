@@ -2,18 +2,17 @@ package repository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import com.typesafe.config.Config;
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import com.typesafe.config.Config;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.CompletableFuture;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import play.inject.ApplicationLifecycle;
 import play.Environment;
+import play.inject.ApplicationLifecycle;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
