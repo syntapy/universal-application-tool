@@ -37,12 +37,12 @@ public class AmazonS3Client {
   private Region region;
   private String bucket;
   private S3Client s3;
-  //private URI endpoingOverride;
 
   @Inject
   public AmazonS3Client(ApplicationLifecycle appLifecycle, Config config) {
     this.appLifecycle = checkNotNull(appLifecycle);
     this.config = checkNotNull(config);
+    this.environment = checkNotNull(environment);
 
     log.info("aws s3 enabled: " + String.valueOf(enabled()));
     if (enabled()) {
@@ -123,11 +123,10 @@ public class AmazonS3Client {
       try {
         endpointOverride = new URI(endpoint);
         s3ClientBuilder = s3ClientBuilder.endpointOverride(endpointOverride);
-      } catch(URISyntaxException e) {
+      } catch (URISyntaxException e) {
         throw new RuntimeException(e);
       }
     }
     s3 = s3ClientBuilder.region(region).build();
-
   }
 }
