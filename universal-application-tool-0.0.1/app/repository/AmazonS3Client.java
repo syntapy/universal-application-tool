@@ -38,7 +38,10 @@ public class AmazonS3Client {
   private S3Client s3;
 
   @Inject
-  public AmazonS3Client(ApplicationLifecycle appLifecycle, Config config) {
+  public AmazonS3Client(
+      ApplicationLifecycle appLifecycle, 
+      Config config,
+      Environment environment) {
     this.appLifecycle = checkNotNull(appLifecycle);
     this.config = checkNotNull(config);
     this.environment = checkNotNull(environment);
