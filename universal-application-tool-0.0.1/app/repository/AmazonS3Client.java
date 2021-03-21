@@ -13,10 +13,12 @@ import javax.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import play.inject.ApplicationLifecycle;
+import play.Environment;
 import software.amazon.awssdk.core.ResponseBytes;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.S3ClientBuilder;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
@@ -27,11 +29,11 @@ public class AmazonS3Client {
   public static final String AWS_S3_REGION = "aws.s3.region";
   public static final String AWS_S3_BUCKET = "aws.s3.bucket";
   public static final String AWS_LOCAL_ENDPOINT = "aws.local.endpoint";
-  public static final String DEV_ENV = "dev_env";
   private static final Logger log = LoggerFactory.getLogger("s3client");
 
   private final ApplicationLifecycle appLifecycle;
   private final Config config;
+  private final Environment environment;
   private Region region;
   private String bucket;
   private S3Client s3;
@@ -112,24 +114,20 @@ public class AmazonS3Client {
     String endpoint;
     region = Region.of(regionName);
     bucket = config.getString(AWS_S3_BUCKET);
-    String dev_env = config.getString(DEV_ENV);
     URI endpointOverride;
+    S3ClientBuilder s3ClientBuilder;
 
     endpoint = config.getString(AWS_LOCAL_ENDPOINT);
-    try {
-        if (dev_env.equals("1")) {
-            endpointOverride = new URI(endpoint);
-            s3 = S3Client.builder().endpointOverride(endpointOverride).region(region).build();
-
-        } else {
-            s3 = S3Client.builder().region(region).build();
-        }
-
-    } catch(URISyntaxException e) {
-        log.info("failed to set enpoint uri. reverting from local s3 bucket");
-        dev_env = "0";
-        s3 = S3Client.builder().region(region).build();
-
+    s3ClientBuilder = S3Client.builder().region(region);
+    if (environment.isDev()) {
+      try {
+        endpointOverride = new URI(endpoint);
+        s3ClientBuilder = s3ClientBuilder.endpointOverride(endpointOverride);
+      } catch(URISyntaxException e) {
+        throw new RuntimeException(e);
+      }
     }
+    s3 = s3ClientBuilder.region(region).build();
+
   }
 }

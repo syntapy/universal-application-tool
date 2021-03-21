@@ -1,9 +1,0 @@
-#!/bin/bash
-
-echo "Waiting for localstack to get set up. This may take a minute or two"
-wget -O /tmp/localstack_health_check_slkhdfsg.html -o /tmp/localstack_health_check_slkhdfsg.log http://localhost:4566/health
-
-##### Wait maybe 10s for services to change from 'starting' to 'running'
-sleep 10
-
-echo "Localstack should be ready now"

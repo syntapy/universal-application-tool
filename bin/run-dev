@@ -1,25 +1,17 @@
 #!/bin/bash
 
-set -e
-set +x
-export AWS_DEFAULT_REGION=us-west-2
-export REGION=$AWS_DEFAULT_REGION
-export AWS_S3_REGION=$AWS_DEFAULT_REGION
-export AWS_S3_BUCKET_NAME=civiform-local-s3
+# Start localstack service
+$( dirname ${BASH_SOURCE[0]})/localstack/start_localstack
 
-./bin/localstack/start_localstack
+# On first time developer starts local s3 using other terminal
+# Dev is notified on this
+$( dirname ${BASH_SOURCE[0]})/localstack/wait_local_s3_exists
 
-# NOTE: developer should start local s3 using other terminal if it doesn't exist already
-#       this should notify the user when to do it and wait until that happens
-./bin/localstack/wait_local_s3_exists
-
-aws --endpoint-url=http://localhost:4566 --profile localstack cloudformation deploy --region ${REGION} --stack-name local_s3 --template-file ./infra/local_s3.yaml
 # run bin/pull-image
 $( dirname ${BASH_SOURCE[0]})/pull-image
 
 if [ -f ".secrets" ]; then
     . .secrets
 fi
-docker tag public.ecr.aws/t1q6b4h2/uat-dev:latest uat
 
-AWS_S3_REGION=$AWS_S3_REGION AWS_S3_BUCKET_NAME=$AWS_S3_BUCKET_NAME docker-compose up
+docker-compose up
