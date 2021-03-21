@@ -13,3 +13,4 @@ bundle.js
 tailwind.css
 .venv/
 !.venv/requirements.txt
+.env
