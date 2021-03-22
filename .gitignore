@@ -11,6 +11,3 @@ RUNNING_PID
 node_modules
 bundle.js
 tailwind.css
-.venv/
-!.venv/requirements.txt
-.env
