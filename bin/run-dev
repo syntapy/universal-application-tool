@@ -5,7 +5,7 @@ $( dirname ${BASH_SOURCE[0]})/localstack/start-localstack
 
 # On first time developer starts local s3 using other terminal
 # Dev is notified on this
-$( dirname ${BASH_SOURCE[0]})/localstack/wait-local-s3_exists
+$( dirname ${BASH_SOURCE[0]})/localstack/wait-local-s3-exists
 
 # run bin/pull-image
 $( dirname ${BASH_SOURCE[0]})/pull-image
