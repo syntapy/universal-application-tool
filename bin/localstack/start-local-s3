@@ -3,4 +3,4 @@
 export AWS_DEFAULT_REGION=us-west-2
 REGION=us-west-2
 
-aws --endpoint-url=http://localhost:4566 --profile localstack cloudformation deploy --region ${REGION} --stack-name local_s3 --template-file ./bin/localstack/local_s3.yaml
+aws --endpoint-url=http://localhost:4566 --profile localstack s3api create-bucket --bucket civiform-localz-s3 --region us-west-2

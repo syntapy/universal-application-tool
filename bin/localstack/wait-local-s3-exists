@@ -1,5 +1,0 @@
-#!/bin/bash
-
-echo "Please make sure the local s3 bucket exists (run './bin/start-local-s3' from another terminal)"
-aws --endpoint-url=http://localhost:4566 --profile localstack s3api wait bucket-exists --bucket civiform-local-s3
-echo "S3 bucket exists"
