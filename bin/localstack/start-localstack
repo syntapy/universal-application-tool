@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Begin localstack startup process
-docker-compose -f bin/localstack/localstack.yaml up -d
+sudo docker-compose -f bin/localstack/localstack.yaml up -d
 
 # Wait until localhost:4566 is responsive
 echo "Waiting for localstack to get set up. This may take a minute or two"

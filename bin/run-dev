@@ -10,4 +10,4 @@ if [ -f ".secrets" ]; then
     . .secrets
 fi
 
-docker-compose up
+sudo docker-compose up
