@@ -9,5 +9,5 @@ wget -O /tmp/localstack_health_check_slkhdfsg.html -o /tmp/localstack_health_che
 sleep 10
 
 echo "Ensuring local s3 bucket exists"
-bin/localstack/start-local-s3
+bin/localstack/mk-s3
 echo "Done"
