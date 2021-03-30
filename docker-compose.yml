@@ -5,6 +5,8 @@ services:
 
   localstack:
     image: localstack/localstack
+    networks:
+      - cvnet
     container_name: localstack
     ports:
       - 4566:4566
@@ -13,6 +15,8 @@ services:
 
   db:
     image: postgres:12.5
+    networks:
+      - cvnet
     restart: always
     container_name: postgres
     ports:
@@ -22,6 +26,8 @@ services:
 
   civiform:
     image: civiform
+    networks:
+      - cvnet
     restart: always
     container_name: civiform
     links:
@@ -46,3 +52,7 @@ services:
       - ~/.ivy:/root/.ivy2
 
     command: ~run
+
+networks:
+  cvnet:
+    name: cvnet

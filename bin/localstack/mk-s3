@@ -4,7 +4,7 @@ create_s3_cmd="s3api create-bucket --bucket civiform-local-s3 --region us-west-2
 
 if ! which aws; then
     docker run --rm -it \
-    --network universal-application-tool_default \
+    --network cvnet \
     -e AWS_ACCESS_KEY_ID=test \
     -e AWS_SECRET_ACCESS_KEY=test \
     amazon/aws-cli \
