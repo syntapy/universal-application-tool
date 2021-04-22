@@ -1,4 +1,7 @@
 #! /bin/bash
+# Note: Run `xhost +local:root` first to get this to work
+#       Run `xhost -local:root` to undo
+xhost +local:root
 pushd $(git rev-parse --show-toplevel)
 
 set -e
@@ -10,6 +13,7 @@ docker run --ipc=host --rm -it \
   -v "$(pwd)/browser-test/tmp:/usr/src/civiform-browser-tests/tmp" \
   -v /tmp/.X11-unix:/tmp/.X11-unix \
   -e DISPLAY=$DISPLAY \
+  -p 6000:6000 \
   -h $HOSTNAME \
   -v $HOME/.Xauthority:$HOME/.Xauthority \
   --network browser-test_default \
@@ -18,3 +22,4 @@ docker run --ipc=host --rm -it \
   $@
 
 popd
+xhost -local:root
