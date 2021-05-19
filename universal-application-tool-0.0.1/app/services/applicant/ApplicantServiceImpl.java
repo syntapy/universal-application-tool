@@ -19,6 +19,8 @@ import java.util.concurrent.CompletionStage;
 import javax.inject.Inject;
 import models.Applicant;
 import models.Application;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import play.libs.concurrent.HttpExecutionContext;
 import repository.ApplicationRepository;
 import repository.UserRepository;
@@ -47,6 +49,8 @@ public class ApplicantServiceImpl implements ApplicantService {
   private final String baseUrl;
   private final boolean isStaging;
   private final HttpExecutionContext httpExecutionContext;
+
+  public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Inject
   public ApplicantServiceImpl(
@@ -109,10 +113,15 @@ public class ApplicantServiceImpl implements ApplicantService {
   @Override
   public CompletionStage<ReadOnlyApplicantProgramService> stageAndUpdateIfValid(
       long applicantId, long programId, String blockId, ImmutableMap<String, String> updateMap) {
+    logger.error("stage_and_update_if_valid: BEFORE filter: " + updateMap.entrySet().toString());
+
     ImmutableSet<Update> updates =
         updateMap.entrySet().stream()
+            .filter(entry -> !entry.getValue().equals("don't actually write this to applicant data"))
             .map(entry -> Update.create(Path.create(entry.getKey()), entry.getValue()))
             .collect(ImmutableSet.toImmutableSet());
+
+    logger.error("stage_and_update_if_valid: AFTER filter: " + updates.toString());
 
     // Ensures updates do not collide with metadata scalars. "keyName[]" collides with "keyName".
     boolean updatePathsContainReservedKeys =

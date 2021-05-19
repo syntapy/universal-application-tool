@@ -55,7 +55,7 @@ public final class ApplicantProgramBlocksController extends CiviFormController {
   private final ProfileUtils profileUtils;
   private final String baseUrl;
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+  public final Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Inject
   public ApplicantProgramBlocksController(
@@ -211,6 +211,8 @@ public final class ApplicantProgramBlocksController extends CiviFormController {
   public CompletionStage<Result> update(
       Request request, long applicantId, long programId, String blockId, boolean inReview) {
     CompletionStage<String> applicantStage = this.applicantService.getName(applicantId);
+
+    logger.info("updating block controller");
 
     return applicantStage
         .thenComposeAsync(v -> checkApplicantAuthorization(profileUtils, request, applicantId))

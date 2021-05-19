@@ -136,7 +136,8 @@ public class MultiSelectQuestion implements PresentsErrors {
   }
 
   public Path getSelectionPath() {
-    return applicantQuestion.getContextualizedPath().join(Scalar.SELECTION);
+    Path rval = applicantQuestion.getContextualizedPath().join(Scalar.SELECTION);
+    return rval;
   }
 
   /** Get options in the applicant's preferred locale. */

@@ -43,7 +43,12 @@ public class CheckboxQuestionRenderer extends ApplicantQuestionRenderer {
                         renderCheckboxOption(
                             multiOptionQuestion.getSelectionPathAsArray(),
                             option,
-                            multiOptionQuestion.optionIsSelected(option))));
+                            multiOptionQuestion.optionIsSelected(option))))
+            .with(
+                input()
+                    .withName(multiOptionQuestion.getSelectionPathAsArray())
+                    .withValue("don't actually write this to applicant data")
+                    .withClasses(Styles.HIDDEN));
 
     return renderInternal(params.messages(), checkboxQuestionFormContent);
   }
@@ -70,4 +75,8 @@ public class CheckboxQuestionRenderer extends ApplicantQuestionRenderer {
 
     return div().withClasses(Styles.MY_2, Styles.RELATIVE).with(labelTag);
   }
+
+  //private Tag hiddenCheckboxQuestion(
+  //
+  //)
 }
