@@ -36,6 +36,7 @@ import services.program.ProgramNotFoundException;
 import services.program.ProgramService;
 import services.question.exceptions.UnsupportedScalarTypeException;
 import services.question.types.ScalarType;
+import views.questiontypes.CheckboxQuestionRenderer;
 
 public class ApplicantServiceImpl implements ApplicantService {
   private static final String STAGING_PROGRAM_ADMIN_NOTIFICATION_MAILING_LIST =
@@ -113,15 +114,13 @@ public class ApplicantServiceImpl implements ApplicantService {
   @Override
   public CompletionStage<ReadOnlyApplicantProgramService> stageAndUpdateIfValid(
       long applicantId, long programId, String blockId, ImmutableMap<String, String> updateMap) {
-    logger.error("stage_and_update_if_valid: BEFORE filter: " + updateMap.entrySet().toString());
+    String noWrite = CheckboxQuestionRenderer.noWriteString();
 
     ImmutableSet<Update> updates =
         updateMap.entrySet().stream()
-            .filter(entry -> !entry.getValue().equals("don't actually write this to applicant data"))
+            .filter(entry -> !entry.getValue().equals(noWrite))
             .map(entry -> Update.create(Path.create(entry.getKey()), entry.getValue()))
             .collect(ImmutableSet.toImmutableSet());
-
-    logger.error("stage_and_update_if_valid: AFTER filter: " + updates.toString());
 
     // Ensures updates do not collide with metadata scalars. "keyName[]" collides with "keyName".
     boolean updatePathsContainReservedKeys =

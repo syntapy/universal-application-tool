@@ -22,6 +22,10 @@ public class CheckboxQuestionRenderer extends ApplicantQuestionRenderer {
     super(question);
   }
 
+  public static String noWriteString() {
+    return "don't actually write this to applicant data";
+  }
+
   @Override
   public Tag render(ApplicantQuestionRendererParams params) {
     MultiSelectQuestion multiOptionQuestion = question.createMultiSelectQuestion();
@@ -47,7 +51,7 @@ public class CheckboxQuestionRenderer extends ApplicantQuestionRenderer {
             .with(
                 input()
                     .withName(multiOptionQuestion.getSelectionPathAsArray())
-                    .withValue("don't actually write this to applicant data")
+                    .withValue(noWriteString())
                     .withClasses(Styles.HIDDEN));
 
     return renderInternal(params.messages(), checkboxQuestionFormContent);
