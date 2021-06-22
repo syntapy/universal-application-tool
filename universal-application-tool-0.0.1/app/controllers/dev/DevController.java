@@ -6,6 +6,8 @@ import com.typesafe.config.Config;
 import java.net.URI;
 import play.Environment;
 import play.mvc.Controller;
+import play.mvc.Http;
+import play.mvc.Result;
 
 public class DevController extends Controller {
   private final Environment environment;
@@ -31,5 +33,9 @@ public class DevController extends Controller {
 
   public boolean isStaging() {
     return hostName.equals("staging.seattle.civiform.com");
+  }
+
+  public Result mockNotFound(Http.Request request) {
+    return ok("Mock 404 page"); 
   }
 }
