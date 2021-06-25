@@ -39,6 +39,9 @@ content.benefits=Obtener beneficios
 content.description1=CiviForm le permite solicitar muchos beneficios a la vez reutilizando información.
 content.description2=Comience eligiendo una aplicación a continuación.
 
+error.not_found=Esta página no parece existir 
+error.not_found_description1=Por favor revise la URL o regrese 
+
 label.street=Dirección Línea 1
 placeholder.street=Dirección
 label.addressLine2=Línea de dirección 2
