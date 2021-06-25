@@ -40,7 +40,7 @@ content.description1=CiviForm le permite solicitar muchos beneficios a la vez re
 content.description2=Comience eligiendo una aplicación a continuación.
 
 error.not_found=Esta página no parece existir 
-error.not_found_description1=Por favor revise la URL o regrese 
+error.not_found_description=Por favor revise la URL o regrese 
 
 label.street=Dirección Línea 1
 placeholder.street=Dirección
